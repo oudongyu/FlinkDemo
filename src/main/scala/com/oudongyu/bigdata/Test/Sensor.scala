@@ -1,18 +1,11 @@
-package com.oudongyu.bigdata
+package com.oudongyu.bigdata.Test
 
-import java.{lang, util}
-import java.util.Properties
-
-import org.apache.flink.api.common.serialization.{SimpleStringEncoder, SimpleStringSchema}
+import org.apache.flink.api.common.serialization.SimpleStringEncoder
 import org.apache.flink.core.fs.Path
-import org.apache.flink.streaming.api.collector.selector.OutputSelector
-import org.apache.flink.streaming.api.datastream.BroadcastStream
 import org.apache.flink.streaming.api.functions.co.CoMapFunction
 import org.apache.flink.streaming.api.functions.sink.filesystem.StreamingFileSink
 import org.apache.flink.streaming.api.functions.sink.filesystem.rollingpolicies.DefaultRollingPolicy
-import org.apache.flink.streaming.api.functions.source.{RichSourceFunction, SourceFunction}
 import org.apache.flink.streaming.api.scala._
-import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer
 
 import scala.actors.threadpool.TimeUnit
 

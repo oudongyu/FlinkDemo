@@ -1,4 +1,4 @@
-package com.oudongyu.bigdata
+package com.oudongyu.bigdata.Test
 
 import java.sql.{Connection, DriverManager, PreparedStatement}
 

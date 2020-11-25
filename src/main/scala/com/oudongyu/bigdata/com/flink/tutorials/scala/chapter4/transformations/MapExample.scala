@@ -13,10 +13,12 @@ object MapExample {
     val dataStream: DataStream[Int] = senv.fromElements(1, 2, -3, 0, 5, -9, 8)
 
     // 使用 => 构造Lambda表达式
-    val lambda = dataStream.map ( input => ("lambda Input : " + input.toString + ", Output : " + (input * 2).toString) )
+    val lambda = dataStream.map(input => ("lambda Input : " + input.toString + ", Output : " + (input * 2).toString))
 
     // 使用 _ 构造Lambda表达式
-    val lambda2 = dataStream.map { _ * 2 }
+    val lambda2 = dataStream.map {
+      _ * 2
+    }
 
     // 继承RichMapFunction
     // 第一个泛型Int是输入类型，第二个String泛型是输出类型
@@ -25,14 +27,18 @@ object MapExample {
         ("overide map Input : " + input.toString + ", Output : " + (input * 2).toString)
     }
 
-    val richFunctionDataStream = dataStream.map {new DoubleMapFunction()}
-
+    val richFunctionDataStream = dataStream.map {
+      new DoubleMapFunction()
+    }
+    richFunctionDataStream.print()
     // 匿名类
-    val anonymousDataStream = dataStream.map {new RichMapFunction[Int, String] {
-      override def map(input: Int): String = {
-        ("overide map Input : " + input.toString + ", Output : " + (input * 2).toString)
+    val anonymousDataStream = dataStream.map {
+      new RichMapFunction[Int, String] {
+        override def map(input: Int): String = {
+          ("overide map Input : " + input.toString + ", Output : " + (input * 2).toString)
+        }
       }
-    }}
+    }
 
     senv.execute("basic map transformation")
   }

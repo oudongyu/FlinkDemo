@@ -20,9 +20,11 @@ object FlatMapExample {
     // split函数的输入为 "Hello World" 输出为 "Hello" 和 "World" 组成的列表 ["Hello", "World"]
     // flatMap()将列表中每个元素提取出来
     // 最后输出为 ["Hello", "World", "Hello", "this", "is", "Flink"]
-    val words: DataStream[String] = dataStream.flatMap ( input => input.split(" ") )
-
-    val words2: DataStream[String] = dataStream.flatMap{ _.split(" ") }
+    val words: DataStream[String] = dataStream.flatMap(input => input.split(" "))
+    //    words.print()
+    val words2: DataStream[String] = dataStream.flatMap {
+      _.split(" ")
+    }
 
     // 只对字符串数量大于15的句子进行处理
     val longSentenceWords: DataStream[String] = dataStream.flatMap {
@@ -37,7 +39,7 @@ object FlatMapExample {
         }
       }
     }
-
+    //    longSentenceWords.print()
     val flatMapWithStream: DataStream[String] = dataStream.flatMapWith {
       case (sentence: String) => {
         if (sentence.size > 15) {
@@ -47,10 +49,11 @@ object FlatMapExample {
         }
       }
     }
+    //    flatMapWithStream.print()
 
     val functionStream: DataStream[String] = dataStream.flatMap(new WordSplitFlatMap(10))
 
-    val lambda: DataStream[String] = dataStream.flatMap{
+    val lambda: DataStream[String] = dataStream.flatMap {
       (value: String, out: Collector[String]) => {
         if (value.size > 10) {
           value.split(" ").foreach(out.collect)
@@ -59,7 +62,7 @@ object FlatMapExample {
     }
 
     val richFunctionStream: DataStream[String] = dataStream.flatMap(new WordSplitRichFlatMap(10))
-
+//    richFunctionStream.print()
     val jobExecuteResult: JobExecutionResult = senv.execute("basic flatMap transformation")
 
     // 执行结束后 获取累加器的结果
@@ -92,7 +95,7 @@ object FlatMapExample {
     override def flatMap(value: String, out: Collector[String]): Unit = {
       // 运行过程中调用累加器
       this.numOfLines.add(1)
-      if(value.size > limit) {
+      if (value.size > limit) {
         value.split(" ").foreach(out.collect)
       }
     }
